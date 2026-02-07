@@ -128,7 +128,19 @@ float calcularPromedio(Estudiante *raiz, int *contador)
 // 7. Encontrar al estudiante con la nota más alta
 Estudiante *encontrarMejorNota(Estudiante *raiz)
 {
-    // Tu código aquí
+    if (raiz == NULL)
+        return NULL;
+
+    Estudiante *mejor = raiz;
+    Estudiante *izq = encontrarMejorNota(raiz->izquierdo);
+    Estudiante *der = encontrarMejorNota(raiz->derecho);
+
+    if (izq != NULL && izq->nota > mejor->nota)
+        mejor = izq;
+    if (der != NULL && der->nota > mejor->nota)
+        mejor = der;
+
+    return mejor;
 }
 
 int main()
@@ -201,12 +213,32 @@ int main()
                 cout << "No hay estudiantes.\n";
             break;
         }
-        case 8:
-            cout << "Saliendo del sistema. " << endl;
+
+        case 7:
+        {
+            Estudiante *mejor = encontrarMejorNota(sistema);
+            if (mejor != NULL)
+            {
+                cout << "Estudiante con mejor nota:\n";
+                cout << "Carnet: " << mejor->carnet
+                     << ", Nombre: " << mejor->nombre
+                     << ", Nota: " << mejor->nota << endl;
+            }
+            else
+            {
+                cout << "No hay estudiantes registrados.\n";
+            }
             break;
-        default:
-            cout << "Opcion no valida. Por favor intente de nuevo." << endl;
         }
+
+        case 8:
+            cout << "Saliendo del sistema.\n";
+            break;
+
+        default:
+            cout << "Opcion no valida. Intente de nuevo.\n";
+        }
+
     } while (opcion != 8);
 
     return 0;

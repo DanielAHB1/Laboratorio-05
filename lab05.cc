@@ -31,9 +31,26 @@ Estudiante *crearEstudiante(int carnet, char nom[], float nota)
 }
 // TODO: Implementar estas funciones
 // 1. Insertar un estudiante en el árbol (ordenado por carnet)
-Estudiante* insertar(Estudiante* raiz, int carnet, char nombre[], float nota)
+Estudiante *insertar(Estudiante *raiz, int carnet, char nombre[], float nota)
 {
-    // Tu código aquí
+    if (raiz == NULL)
+    {
+        cout << "Estudiante con carnet " << carnet << " agregado correctamente." << endl;
+        return crearEstudiante(carnet, nombre, nota);
+    }
+    if (carnet < raiz->carnet)
+    {
+        raiz->izquierdo = insertar(raiz->izquierdo, carnet, nombre, nota);
+    }
+    else if (carnet > raiz->carnet)
+    {
+        raiz->derecho = insertar(raiz->derecho, carnet, nombre, nota);
+    }
+    else
+    {
+        cout << "Error: El carnet ya existe." << endl;
+    }
+    return raiz;
 }
 // 2. Mostrar todos los estudiantes en orden de carnet
 void mostrarEstudiantes(Estudiante *raiz)
@@ -66,6 +83,7 @@ Estudiante *encontrarMejorNota(Estudiante *raiz)
 {
     // Tu código aquí
 }
+
 int main()
 {
     Estudiante *sistema = NULL;
@@ -86,8 +104,24 @@ int main()
         cin >> opcion;
 
         // Implementa el switch con las opciones
-
-    } while (opcion != 8);
+        switch (opcion)
+        {
+        case 1:
+            int carnet;
+            char nombre[50];
+            float nota;
+            cout << "Ingrese el carnet del estudiante: ";
+            cin >> carnet;
+            cin.ignore();
+            cout << "Ingrese el nombre del estudiante: ";
+            cin.getline(nombre, 50);
+            cout << "Ingrese la nota del estudiante: ";
+            cin >> nota;
+            sistema = insertar(sistema, carnet, nombre, nota);
+            break;
+        }
+     } while (opcion != 8);
+    
 
     return 0;
 }

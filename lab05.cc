@@ -100,20 +100,30 @@ void mostrarAprobados(Estudiante *raiz)
 void mostrarReprobados(Estudiante *raiz)
 {
     {
-        if (raiz != NULL) {
-        mostrarReprobados(raiz->izquierdo);
-        if (raiz->nota < 6.0) {
-            cout << "Carnet: " << raiz->carnet << ", Nombre: " << raiz->nombre << ", Nota: " << raiz->nota << endl;
+        if (raiz != NULL)
+        {
+            mostrarReprobados(raiz->izquierdo);
+            if (raiz->nota < 6.0)
+            {
+                cout << "Carnet: " << raiz->carnet << ", Nombre: " << raiz->nombre << ", Nota: " << raiz->nota << endl;
+            }
+            mostrarReprobados(raiz->derecho);
         }
-        mostrarReprobados(raiz->derecho);
     }
-}
 }
 // 6. Calcular el promedio de todas las notas
 float calcularPromedio(Estudiante *raiz, int *contador)
 {
-    // Tu código aquí
-    // Usa el contador para saber cuántos estudiantes hay
+    if (raiz == NULL)
+        return 0;
+
+    float suma = raiz->nota;
+    (*contador)++;
+
+    suma += calcularPromedio(raiz->izquierdo, contador);
+    suma += calcularPromedio(raiz->derecho, contador);
+
+    return suma;
 }
 // 7. Encontrar al estudiante con la nota más alta
 Estudiante *encontrarMejorNota(Estudiante *raiz)
@@ -180,6 +190,17 @@ int main()
             mostrarReprobados(sistema);
             break;
 
+        case 6:
+        {
+            int contador = 0;
+            float suma = calcularPromedio(sistema, &contador);
+
+            if (contador > 0)
+                cout << "Promedio general: " << suma / contador << endl;
+            else
+                cout << "No hay estudiantes.\n";
+            break;
+        }
         case 8:
             cout << "Saliendo del sistema. " << endl;
             break;
